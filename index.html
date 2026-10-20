@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffd3e4">
 <title>Thiệp 20/10</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Dancing+Script:wght@600&family=Playfair+Display:ital,wght@0,600;1,600;1,700&display=swap"></noscript>
@@ -28,8 +29,10 @@ html{background:#fff1f6}
 html{height:100%}
 body{
   margin:0;
-  min-height:100%;
-  padding-block:clamp(20px,5vh,56px);
+  min-height:100vh;
+  min-height:100dvh;
+  padding-top:calc(clamp(20px,5vh,56px) + env(safe-area-inset-top,0px));
+  padding-bottom:calc(clamp(20px,5vh,56px) + env(safe-area-inset-bottom,0px));
   padding-left:max(16px,env(safe-area-inset-left,0px));
   padding-right:max(16px,env(safe-area-inset-right,0px));
   display:grid;
@@ -152,7 +155,7 @@ input::placeholder{color:#b987a0}
   animation:rise 1s cubic-bezier(.2,.8,.2,1) backwards;
 }
 .card{
-  --w:min(86vw,380px);
+  --w:min(90vw,400px);
   position:relative;
   display:grid;
   width:var(--w);
@@ -174,7 +177,6 @@ input::placeholder{color:#b987a0}
   position:relative;
   display:grid;
   align-content:center;
-  overflow:hidden;
   padding:clamp(30px,7vw,42px) clamp(24px,6vw,36px);
   background:var(--paper);
   border-radius:3px 16px 16px 3px;
@@ -219,7 +221,6 @@ input::placeholder{color:#b987a0}
 .face{
   position:absolute;
   top:0;right:0;bottom:0;left:0;
-  overflow:hidden;
   backface-visibility:hidden;
   -webkit-backface-visibility:hidden;
   border-radius:3px 16px 16px 3px;
@@ -313,6 +314,28 @@ input::placeholder{color:#b987a0}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}
 }
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.btn,.ghost,.card{touch-action:manipulation}
+@media (max-width:879px){
+  .cover{transition:transform 1.6s cubic-bezier(.65,.02,.25,1),visibility 0s}
+  .card.open .cover{visibility:hidden;transition:transform 1.6s cubic-bezier(.65,.02,.25,1),visibility 0s 1.6s}
+}
+@supports (height:1dvh){
+  @media (max-width:879px){
+    .card{--w:min(90vw,400px,calc(68dvh * 5 / 7))}
+  }
+}
+@media (max-width:520px){
+  .intro{gap:14px}
+  .lead{font-size:.98rem}
+  form{width:100%}
+  .text{font-size:1rem}
+  .actions{display:grid;grid-template-columns:1fr 1fr;width:min(100%,400px)}
+  .actions .btn{grid-column:1/-1}
+  .btn,.ghost{min-height:46px}
+}
+.clip{position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden;border-radius:inherit;pointer-events:none}
+.cover{-webkit-transform-style:preserve-3d;will-change:transform}
 </style>
 </head>
 <body>
@@ -347,7 +370,7 @@ input::placeholder{color:#b987a0}
     <form id="form" novalidate>
       <label for="name">Tên của bạn</label>
       <div class="field">
-        <input id="name" type="text" maxlength="32" placeholder="Ví dụ: Nguyễn Thu Hà" autocomplete="off" enterkeyhint="go">
+        <input id="name" type="text" maxlength="32" placeholder="Ví dụ: Thu Hà" autocomplete="off" enterkeyhint="go">
         <button class="btn" type="submit">Mở thiệp</button>
       </div>
       <p id="hint" role="alert"></p>
@@ -358,7 +381,7 @@ input::placeholder{color:#b987a0}
     <div class="scene">
       <div class="card" id="card" role="button" tabindex="0" aria-expanded="false" aria-label="Thiệp 20/10, bấm để mở hoặc đóng">
         <div class="inside">
-          <svg class="corner" viewBox="0 0 100 100" aria-hidden="true"><use href="#flower" width="100" height="100"/></svg>
+          <div class="clip"><svg class="corner" viewBox="0 0 100 100" aria-hidden="true"><use href="#flower" width="100" height="100"/></svg></div>
           <div class="msg" id="msg">
             <p class="to" id="to" style="--i:0"></p>
             <h2 class="title" id="title" style="--i:1"></h2>
@@ -369,10 +392,12 @@ input::placeholder{color:#b987a0}
         </div>
         <div class="cover">
           <div class="face front">
+            <div class="clip">
             <svg class="art a1" viewBox="0 0 100 100" aria-hidden="true"><use href="#flower" width="100" height="100"/></svg>
             <svg class="art a2" viewBox="0 0 100 100" aria-hidden="true"><use href="#flower" width="100" height="100"/></svg>
             <svg class="art a3" viewBox="0 0 100 100" aria-hidden="true"><use href="#flower" width="100" height="100"/></svg>
             <svg class="art a4" viewBox="0 0 100 100" aria-hidden="true"><use href="#flower" width="100" height="100"/></svg>
+            </div>
             <div class="crest">
               <span class="small">Ngày Phụ nữ Việt Nam</span>
               <strong>20/10</strong>
@@ -381,9 +406,11 @@ input::placeholder{color:#b987a0}
             <span class="tap">Chạm để mở</span>
           </div>
           <div class="face back">
+            <div class="clip">
             <svg class="art b1" viewBox="0 0 100 100" aria-hidden="true"><use href="#flower" width="100" height="100"/></svg>
             <svg class="art b2" viewBox="0 0 100 100" aria-hidden="true"><use href="#flower" width="100" height="100"/></svg>
             <svg class="art b3" viewBox="0 0 100 100" aria-hidden="true"><use href="#flower" width="100" height="100"/></svg>
+            </div>
             <p>Mỗi cô gái là một đóa hoa riêng</p>
           </div>
         </div>
@@ -480,6 +507,7 @@ form.addEventListener('submit',e=>{
   setTimeout(()=>{
     intro.hidden=true;
     stage.hidden=false;
+    window.scrollTo(0,0);
     card.focus({preventScroll:true});
     setTimeout(openCard,1100);
   },480);
